@@ -18,7 +18,7 @@ server = mysql.connector.connect(
          autocommit=True
          )
 
-ident = [input("input airport code"), input("input airpot code")]
+ident = [input("input first airport code"), input("input second airpot code")]
 result = list()
 for item in ident:
        result.append(request("SELECT latitude_deg, longitude_deg from airports where ident like '"+str(item)+"';"))

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Programs</title>
+</head>
+<body>
+	<h1>JavaScript Programs</h1>
+	<p>Check the console or the HTML document for the results.</p>
+	
+	<script>
+		// Function to log to console
+		function logToConsole() {
+			console.log("I'm printing to console!");
+		}
+
+		// Function to greet user
+		function greetUser() {
+			let name = prompt("What's your name?");
+			document.write("<p>Hello, " + name + "!</p>");
+		}
+
+		// Function to calculate sum, product and average of three numbers
+		function calculateStats() {
+			let num1 = parseInt(prompt("Enter the first number:"));
+			let num2 = parseInt(prompt("Enter the second number:"));
+			let num3 = parseInt(prompt("Enter the third number:"));
+
+			let sum = num1 + num2 + num3;
+			let product = num1 * num2 * num3;
+			let avg = sum / 3;
+
+			document.write("<p>Sum: " + sum + "</p>");
+			document.write("<p>Product: " + product + "</p>");
+			document.write("<p>Average: " + avg + "</p>");
+		}
+
+		// Function to sort student into Hogwarts house
+		function sortingHat() {
+			let name = prompt("What's your name?");
+			let house;
+
+			switch(Math.floor(Math.random() * 4) + 1) {
+				case 1:
+					house = "Gryffindor";
+					break;
+				case 2:
+					house = "Slytherin";
+					break;
+				case 3:
+					house = "Hufflepuff";
+					break;
+				case 4:
+					house = "Ravenclaw";
+					break;
+			}
+
+			document.write("<p>" + name + ", you are " + house + "!</p>");
+		}
+
+		// Function to check for leap year
+		function isLeapYear() {
+			let year = parseInt(prompt("Enter a year:"));
+
+			if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
+				document.write("<p>" + year + " is a leap year.</p>");
+			} else {
+				document.write("<p>" + year + " is not a leap year.</p>");
+			}
+		}
+
+		// Function to calculate square root
+		function calculateSqrt() {
+			let confirmation = confirm("Should I calculate the square root?");
+
+			if (confirmation) {
+				let num = parseFloat(prompt("Enter a number:"));
+
+				if (num < 0) {
+					document.write("<p>The square root of a negative number is not defined.</p>");
+				} else {
+					let sqrt = Math.sqrt(num);
+					document.write("<p>The square root of " + num + " is " + sqrt + ".</p>");
+				}
+			} else {
+				document.write("<p>The square root is not calculated.</p>");
+			}
+		}
+
+		// Function to roll dice and calculate sum
+		function rollDice() {
+			let numDice = parseInt(prompt("How many dice do you want to roll?"));
+			let sum = 0;
+
+			for (let i = 0; i < numDice; i++) {
+				let roll = Math.floor(Math.random() * 6) + 1;
+				sum += roll;
+			}
+
+			document

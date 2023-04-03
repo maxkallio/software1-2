@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Programming Exercises</title>
+</head>
+<body>
+	<h1>JavaScript Programming Exercises</h1>
+	<h2>Exercise 1</h2>
+	<p>Enter five numbers:</p>
+	<input type="text" id="num1">
+	<input type="text" id="num2">
+	<input type="text" id="num3">
+	<input type="text" id="num4">
+	<input type="text" id="num5">
+	<button onclick="reverseNumbers()">Reverse Numbers</button>
+	<p id="reverseOutput"></p>
+
+	<h2>Exercise 2</h2>
+	<p>Enter the number of participants:</p>
+	<input type="text" id="numParticipants">
+	<button onclick="sortParticipants()">Sort Participants</button>
+	<ol id="participantsList"></ol>
+
+	<h2>Exercise 3</h2>
+	<p>Enter the names of six dogs:</p>
+	<input type="text" id="dog1">
+	<input type="text" id="dog2">
+	<input type="text" id="dog3">
+	<input type="text" id="dog4">
+	<input type="text" id="dog5">
+	<input type="text" id="dog6">
+	<button onclick="reverseDogs()">Reverse Dogs</button>
+	<ul id="dogsList"></ul>
+
+	<h2>Exercise 4</h2>
+	<p>Enter some numbers (0 to stop):</p>
+	<input type="text" id="numberInput">
+	<button onclick="sortNumbers()">Sort Numbers</button>
+	<ul id="numberList"></ul>
+
+	<h2>Exercise 5</h2>
+	<p>Enter some numbers:</p>
+	<input type="text" id="numberInput2">
+	<button onclick="checkDuplicates()">Check Duplicates</button>
+	<ul id="duplicateList"></ul>
+
+	<h2>Exercise 6</h2>
+	<button onclick="rollDice()">Roll Dice Until 6</button>
+	<ul id="diceList"></ul>
+
+	<h2>Exercise 7</h2>
+	<p>Enter the number of sides on the dice:</p>
+	<input type="text" id="numSides">
+	<button onclick="rollDice2()">Roll Dice</button>
+	<ul id="diceList2"></ul>
+
+	<h2>Exercise 8</h2>
+	<button onclick="concatStrings()">Concatenate Strings</button>
+	<p id="stringOutput"></p>
+
+	<h2>Exercise 9</h2>
+	<button onclick="getEvenNumbers()">Get Even Numbers</button>
+	<p id="evenOutput"></p>
+
+	<h2>Exercise 10</h2>
+	<p>Enter the number of candidates:</p>
+	<input type="text" id="numCandidates">
+	<button onclick="initCandidates()">Submit</button>
+	<p>Enter the names of the candidates:</p>
+	<div id="candidateInputs"></div>
+	<p>Enter the number of voters:</p>
+	<input type="text" id="numVoters">
+	<div id="voterInputs"></div>
+	<button onclick="countVotes()">Count Votes</button>
+	<p id="winnerOutput"></p>
+	<ul id="resultsList"></ul>
+
+	<script>
+		// Exercise 1
+		function reverseNumbers() {
+			let num1 = document.getElementById("num1").value;
+			let num2 = document.getElementById("num2").value;
+			let num3 = document.getElementById("num3").value

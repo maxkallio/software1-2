@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hover Effect</title>
+    <style>
+      #target {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="trigger">Hover over me!</p>
+    <img id="target" src="picA.jpg" alt="Image">
+    <script>
+      const trigger = document.getElementById('trigger');
+      const target = document.getElementById('target');
+      const originalSrc = target.src;
+      const newSrc = 'picB.jpg';
+
+      trigger.addEventListener('mouseover', () => {
+        target.src = newSrc;
+      });
+
+      trigger.addEventListener('mouseout', () => {
+        target.src = originalSrc;
+      });
+    </script>
+  </body>
+</html>

@@ -6,6 +6,6 @@
 pituus = float(input("Anna kuhan pituus: "))
 
 if pituus <= 37:
-    print(f"Kuha on alammittainen ja siellä puutu: {(pituus - 37)* -1} cm")
+    print(f"Kuha on alammittainen ja siellä puuttuu: {pituus - 37} cm")
 else:
     print("Kuha on hyväkokoinen")

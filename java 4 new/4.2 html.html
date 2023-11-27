@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV Series Search</title>
+</head>
+<body>
+
+  <h1>TV Series Search</h1>
+
+  <form id="searchForm">
+    <label for="query">Enter TV Series:</label>
+    <input id="query" name="q" type="text" required>
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting traditionally
+
+      // Get the user input
+      const userInput = document.getElementById('query').value;
+
+      // Make an API request
+      fetch(`https://api.tvmaze.com/search/shows?q=${userInput}`)
+        .then(response => response.json())
+        .then(data => {
+          // Display results in the console
+          console.log('Search results:', data);
+
+          // Display results on the page
+          displayResults(data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    });
+
+    function displayResults(data) {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = ''; // Clear previous results
+
+      if (data.length === 0) {
+        resultsContainer.innerHTML = '<p>No results found.</p>';
+        return;
+      }
+
+      data.forEach(show => {
+        const showCard = document.createElement('div');
+        showCard.innerHTML = `
+          <h2>${show.show.name}</h2>
+          <p>${show.show.summary || 'No summary available.'}</p>
+          <p>Genres: ${show.show.genres.join(', ')}</p>
+          <p>Rating: ${show.show.rating.average || 'N/A'}</p>
+          <hr>
+        `;
+        resultsContainer.appendChild(showCard);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prime Number Check</title>
+</head>
+<body>
+
+<!-- Prime Number Check -->
+<script>
+  let numToCheck = parseInt(prompt("Enter a number to check for prime:"));
+  let isPrime = true;
+
+  if (numToCheck <= 1) {
+    isPrime = false;
+  } else {
+    for (let i = 2; i <= Math.sqrt(numToCheck); i++) {
+      if (numToCheck % i === 0) {
+        isPrime = false;
+        break;
+      }
+    }
+  }
+
+  if (isPrime) {
+    document.write("<p>" + numToCheck + " is a prime number.</p>");
+  } else {
+    document.write("<p>" + numToCheck + " is not a prime number.</p>");
+  }
+</script>
+
+</body>
+</html>

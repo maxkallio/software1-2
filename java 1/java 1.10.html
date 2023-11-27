@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice Roll Probability</title>
+</head>
+<body>
+
+<!-- Dice Roll Probability -->
+<script>
+  let numDice = parseInt(prompt("Enter the number of dice:"));
+  let sumOfEyes = parseInt(prompt("Enter the sum of eyes:"));
+  let numSimulations = 10000; // Adjust the number of simulations as needed
+  let countSuccessful = 0;
+
+  for (let i = 0; i < numSimulations; i++) {
+    let sumResult = 0;
+    for (let j = 0; j < numDice; j++) {
+      sumResult += Math.floor(Math.random() * 6) + 1; // Assuming 6-sided dice
+    }
+    if (sumResult === sumOfEyes) {
+      countSuccessful++;
+    }
+  }
+
+  let probability = (countSuccessful / numSimulations) * 100;
+  document.write("<p>Probability to get sum " + sumOfEyes + " with " + numDice + " dice is " + probability.toFixed(2) + "%</p>");
+</script>
+
+</body>
+</html>

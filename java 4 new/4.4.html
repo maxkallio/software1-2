@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV Series Search</title>
+</head>
+<body>
+
+  <h1>TV Series Search</h1>
+
+  <form id="searchForm">
+    <label for="query">Enter TV Series:</label>
+    <input id="query" name="q" type="text" required>
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting traditionally
+
+      // Get the user input
+      const userInput = document.getElementById('query').value;
+
+      // Make an API request
+      fetch(`https://api.tvmaze.com/search/shows?q=${userInput}`)
+        .then(response => response.json())
+        .then(data => {
+          // Display results in the console
+          console.log('Search results:', data);
+
+          // Display results on the page
+          displayResults(data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    });
+
+    function displayResults(data) {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = ''; // Clear previous results
+
+      if (data.length === 0) {
+        resultsContainer.innerHTML = '<p>No results found.</p>';
+        return;
+      }
+
+      data.forEach(show => {
+        const article = document.createElement('article');
+
+        // Name
+        const nameElement = document.createElement('h2');
+        nameElement.textContent = show.show.name;
+        article.appendChild(nameElement);
+
+        // URL with target="_blank"
+        const urlElement = document.createElement('a');
+        urlElement.href = show.show.url;
+        urlElement.target = '_blank';
+        urlElement.textContent = 'View Details';
+        article.appendChild(urlElement);
+
+        // Medium Image with default and optional chaining
+        const imageElement = document.createElement('img');
+        imageElement.src = show.show.image ? show.show.image.medium : 'https://via.placeholder.com/210x295?text=Not%20Found';
+        imageElement.alt = show.show.name;
+        article.appendChild(imageElement);
+
+        // Summary in <div>
+        const summaryElement = document.createElement('div');
+        summaryElement.innerHTML = show.show.summary || 'No summary available.';
+        article.appendChild(summaryElement);
+
+        // Append <article> to the results container
+        resultsContainer.appendChild(article);
+      });
+    }
+  </script>
+
+</body>
+</html>

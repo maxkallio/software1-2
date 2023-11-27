@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digitransit Route Planner</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" integrity="sha512-GLbAltW7ZzYxTLOL4/irMQk8NuP1sZHLj6H/S42q2ZoHI3OVLH/LZwSrmh5um6do5y+u4FC1db4QI3OuzwaHIMQ==" crossorigin="" />
+
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js" integrity="sha512-cv8q2F/1pafQYi9PQobDxInenY+1LSrCP1e3/jGdBvUSPUbds2P/lf6Q8rDnm3CEw4Ck4z6Zl/E5WHrqtVSMbMw==" crossorigin=""></script>
+
+  <!-- Leaflet Routing Machine CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+  <!-- Leaflet Routing Machine JavaScript -->
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+  <!-- GraphQL library -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+  <h1>Digitransit Route Planner</h1>
+
+  <form id="routeForm">
+    <label for="address">Enter Address:</label>
+    <input id="address" name="address" type="text" required>
+    <button type="submit">Plan Route</button>
+  </form>
+
+  <div id="map" style="height: 400px;"></div>
+  <div id="routeInfo"></div>
+
+  <script>
+    document.getElementById('routeForm').addEventListener('submit', async function(event) {
+      event.preventDefault(); // Prevent the form from submitting traditionally
+
+      // Get the user input
+      const userAddress = document.getElementById('address').value;
+
+      // Use a geocoding service to convert address to coordinates (in a real app, you would use a proper geocoding API)
+      const coordinates = [60.200692, 24.934302]; // Example coordinates for Karaportti 2, replace with actual geocoding
+
+      // Initialize the map
+      const map = L.map('map').setView(coordinates, 13);
+
+      // Add a tile layer (you might want to use your own tile layer)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add a marker for the user's address
+      const userMarker = L.marker(coordinates).addTo(map);
+      userMarker.bindPopup(`<b>Your Location:</b> ${userAddress}`).openPopup();
+
+      // Add a marker for the school (Karaportti 2)
+      const schoolCoordinates = [60.200692, 24.934302]; // Replace with actual coordinates
+      const schoolMarker = L.marker(schoolCoordinates).addTo(map);
+      schoolMarker.bindPopup('<b>School (Karaportti 2)</b>').openPopup();
+
+      // Plan the route using Leaflet Routing Machine
+      const control = L.Routing.control({
+        waypoints: [
+          L.latLng(coordinates),
+          L.latLng(schoolCoordinates)
+        ],
+        routeWhileDragging: true,
+        show: false, // Do not show the control by default
+        createMarker: function(i, wp, nWps) {
+          if (i === 0) {
+            // Starting point
+            return L.marker(wp.latLng, {
+              icon: L.divIcon({ className: 'leaflet-div-icon', html: '<b>Start</b>' })
+            });
+          } else if (i === nWps - 1) {
+            // Ending point
+            return L.marker(wp.latLng, {
+              icon: L.divIcon({ className: 'leaflet-div-icon', html: '<b>End</b>' })
+            });
+          }
+          // Waypoint
+          return L.marker(wp.latLng, {
+            icon: L.divIcon({ className: 'leaflet-div-icon', html: '<b>Waypoint</b>' })
+          });
+        }
+      }).addTo(map);
+
+      // Listen for the 'routesfound' event to display route information
+      map.on('routesfound', async function(event) {
+        const route = event.routes[0];
+        displayRouteInfo(route);
+      });
+    });
+
+    function displayRouteInfo(route) {
+      const routeInfoContainer = document.getElementById('routeInfo');
+      routeInfoContainer.innerHTML = '';
+
+      const startTime = new Date(route.segments[0].steps[0].start_time * 1000);
+      const endTime = new Date(route.segments[route.segments.length - 1].steps.slice(-1)[0].stop_time * 1000);
+
+      const startLocation = route.waypoints[0].name;
+      const endLocation = route.waypoints[route.waypoints.length - 1].name;
+
+      routeInfoContainer.innerHTML = `
+        <p><b>Start Location:</b> ${startLocation}</p>
+        <p><b>End Location:</b> ${endLocation}</p>
+        <p><b>Start Time:</b> ${startTime.toLocaleTimeString()}</p>
+        <p><b>End Time:</b> ${endTime.toLocaleTimeString()}</p>
+      `;
+    }
+
+    // Function to query Digitransit Routing API
+    async function queryDigitransitAPI(userAddress, schoolCoordinates) {
+      const digitransitEndpoint = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
+      const apiKey = 'YOUR_DIGITRANSIT_API_KEY'; // Replace with your actual API key
+
+      // Construct a GraphQL query
+      const graphqlQuery = `
+        {
+          plan(
+            from: { address: "${userAddress}" }
+            to: { lat: ${schoolCoordinates[0]}, lon: ${schoolCoordinates[1]} }
+          ) {
+            itineraries {
+              legs {
+                startTime
+                endTime
+              }
+            }
+          }
+        }
+      `;
+
+      try {
+        // Send the GraphQL query to Digitransit API
+        const response = await axios.post(digitransitEndpoint, graphqlQuery, {
+          headers: {
+            'Content-Type': 'application/graphql',
+            'Authorization': `Bearer ${apiKey}`
+          }
+        });
+
+        // Process the response data
+        const itineraries = response.data.data.plan.itineraries;
+        return itineraries;
+      } catch (error) {
+        console.error('Error querying Digitransit API:', error);
+        return null;
+      }
+    }
+  </script>
+
+</body>
+</html>

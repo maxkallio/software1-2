@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 7</title>
+</head>
+<body>
+
+<!-- Assignment 7 -->
+<script>
+  let numDice = parseInt(prompt("Enter the number of dice:"));
+  let sumResult = 0;
+
+  for (let i = 0; i < numDice; i++) {
+    sumResult += Math.floor(Math.random() * 6) + 1; // Assuming 6-sided dice
+  }
+
+  document.write("<p>Sum of dice rolls: " + sumResult + "</p>");
+</script>
+
+</body>
+</html>

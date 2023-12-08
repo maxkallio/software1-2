@@ -391,4 +391,4 @@ while True:
     elif valinta == "2":
         Kauppa()
     elif valinta == "3":
-        break§
+        break

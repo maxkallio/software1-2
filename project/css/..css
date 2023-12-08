@@ -1,0 +1,57 @@
+html {
+    font-family: 'Courier New', Courier, monospaces;
+    font-weight: 500;
+}
+
+body {
+    margin: 0px;
+    background-color: #1a1a1a; /* Dark background color */
+}
+
+a {
+    text-decoration: none;
+    color: #ffcc00; /* Yellow link color */
+    background: #333; /* Dark background color for links */
+}
+
+a:hover {
+    color: #ffffff; /* White link color on hover */
+}
+
+footer {
+    text-align: center;
+    display: block;
+    background-color: #222; /* Dark background color for footer */
+}
+
+.centr_logo {
+    text-align: center;
+    color: #ffcc00; /* Yellow logo color */
+}
+
+.navigation {
+    background-color: #444; /* Dark background color for navigation */
+    color: #fff; /* White text color for navigation */
+}
+
+input {
+    text-decoration: none;
+    color: #333; /* Dark text color for input */
+    background: #ffcc00; /* Yellow background color for input */
+}
+
+input:hover {
+    color: #000; /* Black text color on hover */
+    border-color: #666; /* Border color on hover */
+}
+
+table {
+    color: #333;
+    background: #ffcc00; /* Yellow background color for table */
+    border-radius: 20px;
+    border-color: #000; /* Border color for table */
+}
+
+span {
+    color: #e60000; /* Red text color for span */
+}
